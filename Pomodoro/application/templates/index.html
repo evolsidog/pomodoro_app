@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Timer CSS -->
+    <link href="/static/css/timer.css" rel="stylesheet">
+
+</head>
+
+<body style="background-color: #d5e1df">
+    <div id="pomodoro-app">
+        <!-- Row 1 -->
+         <div class="row">
+             <!-- Column 1 -->
+            <div class="column">
+                <div id="container">
+                    <!-- Create task -->
+                    <div>
+                        <h3>Create Task</h3>
+                        <form action="{{ url_for('add_task') }}" method=post class=add-entry>
+                            <input type="text" name="task_creator" value="unnamed_task" />
+                          <br>
+                            <input value="Create task" type="submit" class="btn btn-primary">
+
+                        </form>
+                    </div>
+                    <!-- Timer -->
+                    <div id="timer">
+                        <div id="time">
+                            <span id="minutes">25</span>
+                            <span id="colon">:</span>
+                            <span id="seconds">00</span>
+                        </div>
+                        <div id="filler"></div>
+                    </div>
+                    <div id="buttons">
+                      <button id="work">Work</button>
+                      <button id="shortBreak">Short Break</button>
+                      <button id="longBreak">Long Break</button>
+                      <button id="stop">Stop</button>
+                    </div>
+                </div>
+            <!-- End column 1 -->
+            </div>
+            <div class="column">
+            <!-- Start column 2 -->
+                <h3>TODO Task</h3>
+                <table>
+                    <thead>
+                        <th>Name</th>
+                    </thead>
+
+                    <tbody>
+                        {% for task in todo_tasks %}
+                            <tr>
+                              <td>{{ task[0] }}</td>
+                              <td>{{ task[1] }}</td>
+                            </tr>
+                        {% endfor %}
+                      </tbody>
+                </table>
+            <!-- End column 2 -->
+            </div>
+            <!-- End row 1 -->
+         </div>
+
+        <!-- Start row 2 -->
+        <div class="row">
+            <!-- Tasks -->
+            <div>
+                <h3>Past runs</h3>
+                {{ past_tasks }}
+            </div>
+        <!-- End row 2 -->
+        </div>
+    </div>
+
+     <!-- Audio -->
+     <audio id="alarm_sound">
+         <source src="/static/audio/Two_Tone_Doorbell.mp3" type="audio/mpeg">
+    </audio>
+     <!-- Timer JavaScript -->
+    <script src="/static/js/timer.js"></script>
+
+</body>
+
+</html>
