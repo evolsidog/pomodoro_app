@@ -8,11 +8,11 @@ from .models import Task, State, db
 @app.route('/')
 def index():
     # TO DO tasks
-    todo_tasks = [(task.id, task.name) for task in db.session.query(Task).
+    todo_tasks = [(task.id, task.creation_date.replace(microsecond=0), task.name) for task in db.session.query(Task).
         join(State, Task.state_id == State.id).
         filter_by(name='TODO').all()]
     # Show past tasks
-    past_tasks = [task.name for task in db.session.query(Task).
+    past_tasks = [(task.end_date, task.name, task.run) for task in db.session.query(Task).
         join(State, Task.state_id == State.id).
         filter_by(name='DONE').all()]
     # past_tasks = [task.name for task in Task.query.filter_by(state='DONE').all()]
@@ -31,3 +31,6 @@ def add_task():
 
 # 1. Selected table. Hide id of each TO DO task.
 # 2. When click en work, if not selected cell, show error message. When end work time, launch event to add a pomodoro in BD
+# 3. Upload file with to do tasks.
+# 4. If task name is empty show error message.
+# 5. Past tasks with sorted by date, with date, name and pomodoros.

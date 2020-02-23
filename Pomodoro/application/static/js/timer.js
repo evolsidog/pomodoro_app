@@ -1,3 +1,4 @@
+// Timer
 var pomodoro = {
     started : false,
     minutes : 0,
@@ -88,3 +89,18 @@ var pomodoro = {
 window.onload = function(){
   pomodoro.init();
 };
+
+// Datatable
+$(document).ready(function() {
+    var table = $('#todoTable').DataTable();
+
+    $('#todoTable tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('active') ) {
+            $(this).removeClass('active');
+        }
+        else {
+            table.$('tr.active').removeClass('active');
+            $(this).addClass('active');
+        }
+    } );
+} );

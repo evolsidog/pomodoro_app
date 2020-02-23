@@ -9,12 +9,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Timer CSS -->
+    <!-- CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="/static/css/timer.css" rel="stylesheet">
 
 </head>
 
-<body style="background-color: #d5e1df">
+<body>
     <div id="pomodoro-app">
         <!-- Row 1 -->
          <div class="row">
@@ -25,7 +27,7 @@
                     <div>
                         <h3>Create Task</h3>
                         <form action="{{ url_for('add_task') }}" method=post class=add-entry>
-                            <input type="text" name="task_creator" value="unnamed_task" />
+                            <input type="text" name="task_creator" value="" />
                           <br>
                             <input value="Create task" type="submit" class="btn btn-primary">
 
@@ -51,32 +53,53 @@
             </div>
             <div class="column">
             <!-- Start column 2 -->
-                <h3>TODO Task</h3>
-                <table>
-                    <thead>
-                        <th>Name</th>
-                    </thead>
+                <h3 align="center">TODO Tasks</h3>
+                <div>
+                    <table id="todoTable" class="table table-condensed table-bordered table-hover" style="width:100%">
+                        <thead>
+                            <th>Secret Id</th>
+                            <th>Creation Date</th>
+                            <th>Name</th>
+                        </thead>
 
-                    <tbody>
-                        {% for task in todo_tasks %}
+                        <tbody>
+                            {% for task in todo_tasks %}
                             <tr>
-                              <td>{{ task[0] }}</td>
-                              <td>{{ task[1] }}</td>
+                                <td> {{ task[0] }} </td>
+                                <td> {{ task[1] }} </td>
+                                <td> {{ task[2] }} </td>
                             </tr>
-                        {% endfor %}
-                      </tbody>
-                </table>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+                </div>
             <!-- End column 2 -->
             </div>
             <!-- End row 1 -->
          </div>
 
         <!-- Start row 2 -->
-        <div class="row">
+        <div class="row" align="center">
             <!-- Tasks -->
             <div>
                 <h3>Past runs</h3>
-                {{ past_tasks }}
+                <table id="pastTable" class="table table-condensed table-bordered table-hover" style="width:100%">
+                    <thead>
+                        <th>End Data</th>
+                        <th>Name</th>
+                        <th>Pomodoros</th>
+                    </thead>
+
+                    <tbody>
+                        {% for task in past_tasks %}
+                        <tr>
+                            <td> {{ task[0] }} </td>
+                            <td> {{ task[1] }} </td>
+                            <td> {{ task[2] }} </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                </table>
             </div>
         <!-- End row 2 -->
         </div>
@@ -86,7 +109,11 @@
      <audio id="alarm_sound">
          <source src="/static/audio/Two_Tone_Doorbell.mp3" type="audio/mpeg">
     </audio>
-     <!-- Timer JavaScript -->
+     <!-- JavaScript -->
+    <script src="/static/js/jquery-3.4.1.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/jquery.dataTables.min.js"></script>
+    <script src="/static/js/dataTables.bootstrap4.min.js"></script>
     <script src="/static/js/timer.js"></script>
 
 </body>

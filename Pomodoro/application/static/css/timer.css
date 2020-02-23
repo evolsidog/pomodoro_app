@@ -9,12 +9,25 @@
   clear: both;
 }
 
+.table th {
+   text-align: center;
+}
+
+.table td {
+   text-align: center;
+}
+
+table.dataTable tbody tr.selected {
+    color: white !important;
+    background-color: #777777 !important;
+}
+
 #container{
   /*border:1px solid #333;
   border-radius :20px;
   width:400px;
-  margin:20px auto;
-  padding:20px;*/
+  margin:20px auto;*/
+  padding:20px;
   text-align:center;
   /*background : #EFC050;*/
 }
