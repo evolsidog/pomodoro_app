@@ -23,15 +23,14 @@
              <!-- Column 1 -->
             <div class="column">
                 <div id="container">
-                    <!-- Create task -->
+                    <!-- Current Task -->
                     <div>
-                        <h3>Create Task</h3>
-                        <form action="{{ url_for('add_task') }}" method=post class=add-entry>
-                            <input type="text" name="task_creator" value="" />
-                          <br>
-                            <input value="Create task" type="submit" class="btn btn-primary">
+                        <h3 align="center">Current Task</h3>
+                        <label id="current_task"></label>
+                        <input type="hidden" id="id_current_task" value="" align="center"/>
 
-                        </form>
+                        <h3 align="center">Pomodoros</h3>
+                        <label id="current_pomodoros">{{ current_task_pomodoros }}</label>
                     </div>
                     <!-- Timer -->
                     <div id="timer">
@@ -47,14 +46,28 @@
                       <button id="shortBreak">Short Break</button>
                       <button id="longBreak">Long Break</button>
                       <button id="stop">Stop</button>
+                      <button id="done">Done</button>
                     </div>
                 </div>
             <!-- End column 1 -->
             </div>
             <div class="column">
             <!-- Start column 2 -->
+                <!-- Create task -->
+                <div align="center">
+                    <h3 align="center">Create Task</h3>
+                    <form action="{{ url_for('add_task') }}" method=post class=add-entry>
+                        <input type="text" name="task_creator" value=""/>
+                      <br>
+                        <input value="Create task" type="submit" class="btn btn-primary">
+
+                    </form>
+                </div>
                 <h3 align="center">TODO Tasks</h3>
                 <div>
+                    <form action="{{ url_for('drop_todo_tasks') }}" method=post class=add-entry>
+                        <input value="Drop todo tasks" type="submit" class="btn btn-primary">
+                    </form>
                     <table id="todoTable" class="table table-condensed table-bordered table-hover" style="width:100%">
                         <thead>
                             <th>Secret Id</th>
@@ -65,6 +78,7 @@
                         <tbody>
                             {% for task in todo_tasks %}
                             <tr>
+
                                 <td> {{ task[0] }} </td>
                                 <td> {{ task[1] }} </td>
                                 <td> {{ task[2] }} </td>

@@ -1,4 +1,4 @@
-// Timer
+// Timer from https://codepen.io/rajdgreat007/pen/ZpZWbw
 var pomodoro = {
     started : false,
     minutes : 0,
@@ -18,7 +18,24 @@ var pomodoro = {
         self.intervalCallback.apply(self);
       }, 1000);
       document.querySelector('#work').onclick = function(){
-        self.startWork.apply(self);
+//          var table = $('#todoTable').DataTable();
+//          if (! table.rows( '.active' ).any() ){
+//                alert('Please select some task in TO DO Task');
+//            }
+//          else{
+//            var id = $.map(table.rows('.active').data(), function (item) {
+//                return item[0] // Get id field
+//            });
+//
+//            self.startWork.apply(self);
+//          }
+            if ($("#current_task").text() === ""){
+                alert('Please select some task in TO DO Task');
+            }
+            else{
+                self.startWork.apply(self);
+            }
+
       };
       document.querySelector('#shortBreak').onclick = function(){
         self.startShortBreak.apply(self);
@@ -29,6 +46,21 @@ var pomodoro = {
       document.querySelector('#stop').onclick = function(){
         self.stopTimer.apply(self);
       };
+      document.querySelector('#done').onclick = function(){
+          idCurrentTask = $("#id_current_task").val()
+          if (idCurrentTask != "") {
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: "/end_task",
+                  data: JSON.stringify({"id_current_task": idCurrentTask}),
+                  success: function () {
+                    console.log("task finished");
+                  },
+                  dataType: "json"
+                });
+          }
+      }
     },
     resetVariables : function(mins, secs, started){
       this.minutes = mins;
@@ -84,17 +116,63 @@ var pomodoro = {
       this.started = false;
       this.fillerHeight = 0;
       this.playAudio();
+      // Add pomodoro in DB
+      idCurrentTask = $("#id_current_task").val()
+      $.ajax({
+          type: "POST",
+          contentType: "application/json; charset=utf-8",
+          url: "/add_pomodoro",
+          data: JSON.stringify({"id_current_task": idCurrentTask}),
+          success: function (data) {
+            $("#current_pomodoros").text(data.current_task_pomodoros.toString());
+          },
+          dataType: "json"
+        });
     }
 };
 window.onload = function(){
   pomodoro.init();
 };
 
-// Datatable
+// TO DO Datatable
 $(document).ready(function() {
-    var table = $('#todoTable').DataTable();
+    var table = $('#todoTable').DataTable( {
+    // Hide first column with user id
+        "columns": [
+            { "visible": false },
+            null,
+            null,
+        ] } );
 
     $('#todoTable tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('active') ) {
+            $(this).removeClass('active');
+            $("#current_task").text("");
+            $("#current_pomodoros").text("");
+            $("#id_current_task").val("");
+        }
+        else {
+            table.$('tr.active').removeClass('active');
+            $(this).addClass('active');
+            var row = $.map(table.rows('.active').data(), function (item) {
+                return item // Get id field
+            });
+            id = row[0]
+            name = row[2]
+            $("#current_task").text(name);
+            if ($("#current_pomodoros").text() == ""){
+                $("#current_pomodoros").text(0);
+            }
+            $("#id_current_task").val(id);
+        }
+    } );
+
+} );
+
+// DONE Datatable
+$(document).ready(function() {
+    var table = $('#pastTable').DataTable();
+    $('#pastTable tbody').on( 'click', 'tr', function () {
         if ( $(this).hasClass('active') ) {
             $(this).removeClass('active');
         }
@@ -103,4 +181,5 @@ $(document).ready(function() {
             $(this).addClass('active');
         }
     } );
+
 } );

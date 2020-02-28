@@ -87,3 +87,7 @@ table.dataTable tbody tr.selected {
 #buttons button#stop{
   background : #f00;
 }
+
+#buttons button#done{
+  background : #ffff00;
+}
